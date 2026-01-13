@@ -15,6 +15,10 @@ const CONTACT = {
   phoneTel: "0178380669",
   faxDisplay: "0178-38-0822",
   lineUrl: "https://lin.ee/sAX3m2a",
+  instagramHandle: "m_base.aomori",
+  instagramUrl: "https://www.instagram.com/m_base.aomori/",
+  lineQr: "/qr/line.png",
+  instaQr: "/qr/instagram.png",
 };
 
 const GOOGLE_FORM =
@@ -93,12 +97,12 @@ function SectionTitle({
   return (
     <div className="flex items-end justify-between gap-4">
       <div>
-        <h2 className="text-2xl font-black tracking-tight md:text-3xl">{title}</h2>
+        <h2 className="text-2xl font-black tracking-tight md:text-3xl">
+          {title}
+        </h2>
         {sub ? <p className="mt-2 text-sm text-white/70">{sub}</p> : null}
       </div>
-      <div className="hidden md:block text-xs text-white/40">
-        {INFO.brand}
-      </div>
+      <div className="hidden md:block text-xs text-white/40">{INFO.brand}</div>
     </div>
   );
 }
@@ -132,15 +136,22 @@ function Chip({ children }: { children: React.ReactNode }) {
 }
 
 export default function Page() {
+  const mapsSearch = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
+    INFO.address
+  )}`;
+  const mapsEmbed = `https://www.google.com/maps?q=${encodeURIComponent(
+    INFO.address
+  )}&output=embed`;
+
   return (
     <main className="min-h-screen bg-neutral-950 text-white">
-      {/* 背景（全体の雰囲気UP） */}
+      {/* 背景 */}
       <div className="pointer-events-none fixed inset-0 -z-10">
         <div className="absolute inset-0 bg-[radial-gradient(900px_500px_at_20%_0%,rgba(249,115,22,0.18),transparent_55%),radial-gradient(800px_600px_at_80%_10%,rgba(255,255,255,0.06),transparent_60%)]" />
         <div className="absolute inset-0 bg-[linear-gradient(to_bottom,rgba(0,0,0,0.2),rgba(0,0,0,0.8))]" />
       </div>
 
-      {/* TOP NAV（見栄え＋導線） */}
+      {/* TOP NAV */}
       <header className="sticky top-0 z-40 border-b border-white/10 bg-neutral-950/70 backdrop-blur">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3">
           <div className="flex items-center gap-3">
@@ -150,14 +161,31 @@ export default function Page() {
             </span>
           </div>
           <nav className="flex items-center gap-2 text-xs">
-            <a className="rounded-lg px-3 py-2 text-white/70 hover:bg-white/5" href="#services">
+            <a
+              className="rounded-lg px-3 py-2 text-white/70 hover:bg-white/5"
+              href="#services"
+            >
               できること
             </a>
-            <a className="rounded-lg px-3 py-2 text-white/70 hover:bg-white/5" href="#stock">
+            <a
+              className="rounded-lg px-3 py-2 text-white/70 hover:bg-white/5"
+              href="#stock"
+            >
               在庫
             </a>
-            <a className="rounded-lg px-3 py-2 text-white/70 hover:bg-white/5" href="#contact">
+            <a
+              className="rounded-lg px-3 py-2 text-white/70 hover:bg-white/5"
+              href="#contact"
+            >
               問合せ
+            </a>
+            <a
+              href={CONTACT.instagramUrl}
+              target="_blank"
+              rel="noreferrer"
+              className="hidden sm:inline-flex rounded-xl border border-white/15 bg-white/[0.03] px-3 py-2 font-bold text-white/85 hover:bg-white/[0.06]"
+            >
+              Instagram
             </a>
             <a
               href={CONTACT.lineUrl}
@@ -221,6 +249,14 @@ export default function Page() {
                   在庫を見る
                 </a>
                 <a
+                  href={mapsSearch}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="rounded-xl border border-white/15 bg-white/[0.03] px-4 py-2 text-sm font-bold text-white hover:bg-white/[0.06]"
+                >
+                  地図
+                </a>
+                <a
                   href="#contact"
                   className="rounded-xl bg-orange-600 px-4 py-2 text-sm font-black text-black hover:bg-orange-500"
                 >
@@ -232,9 +268,11 @@ export default function Page() {
 
           <div className="md:col-span-5">
             <Card className="overflow-hidden">
-              <div className="p-5 border-b border-white/10">
+              <div className="border-b border-white/10 p-5">
                 <div className="text-xs text-white/60">安心ポイント</div>
-                <div className="mt-1 font-black text-lg">指定整備工場 × 4WD/SUV</div>
+                <div className="mt-1 text-lg font-black">
+                  指定整備工場 × 4WD/SUV
+                </div>
                 <p className="mt-2 text-sm text-white/70">
                   「通る」「使える」「長持ちする」カスタムを前提に提案します。
                 </p>
@@ -257,7 +295,10 @@ export default function Page() {
 
       {/* SERVICES */}
       <section className="mx-auto max-w-6xl px-4 py-12" id="services">
-        <SectionTitle title="できること" sub="整備工場だから、カスタムだけじゃなく“維持”まで任せられる。" />
+        <SectionTitle
+          title="できること"
+          sub="整備工場だから、カスタムだけじゃなく“維持”まで任せられる。"
+        />
         <div className="mt-6 grid gap-4 md:grid-cols-2">
           {SERVICES.map((s) => (
             <Card key={s.title} className="p-6">
@@ -283,7 +324,11 @@ export default function Page() {
           {STOCK.map((v) => (
             <Card key={v.id} className="overflow-hidden">
               <div className="relative h-44 w-full bg-black">
-                <img src={v.img} alt={v.name} className="h-full w-full object-cover" />
+                <img
+                  src={v.img}
+                  alt={v.name}
+                  className="h-full w-full object-cover"
+                />
                 <div className="absolute left-3 top-3 rounded-full border border-white/15 bg-black/50 px-3 py-1 text-[11px] text-white/80 backdrop-blur">
                   在庫
                 </div>
@@ -343,12 +388,75 @@ export default function Page() {
         </Card>
       </section>
 
-      {/* CONTACT */}
+      {/* CONTACT + MAP + QR */}
       <section className="mx-auto max-w-6xl px-4 py-12" id="contact">
         <SectionTitle
           title="総合相談・見積もり"
           sub="車検・整備・カスタム・鈑金塗装・車販・リースまでまとめて。"
         />
+
+        {/* 地図＋QR（復活） */}
+        <Card className="mt-6 p-6">
+          <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
+            <div>
+              <div className="text-sm font-black">地図・アクセス</div>
+              <div className="mt-2 text-sm text-white/70">{INFO.address}</div>
+              <a
+                className="mt-3 inline-block rounded-xl border border-white/15 bg-white/[0.03] px-4 py-2 text-sm font-bold text-white hover:bg-white/[0.06]"
+                href={mapsSearch}
+                target="_blank"
+                rel="noreferrer"
+              >
+                Googleマップで開く →
+              </a>
+            </div>
+
+            <div className="grid grid-cols-2 gap-3">
+              <div className="rounded-2xl border border-white/10 bg-black/20 p-4 text-center">
+                <div className="text-xs text-white/60">LINE</div>
+                <img
+                  src={CONTACT.lineQr}
+                  alt="LINE QR"
+                  className="mx-auto mt-2 h-28 w-28 object-contain"
+                />
+                <a
+                  href={CONTACT.lineUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="mt-2 inline-block text-xs font-bold text-orange-300 hover:text-orange-200"
+                >
+                  友だち追加 →
+                </a>
+              </div>
+
+              <div className="rounded-2xl border border-white/10 bg-black/20 p-4 text-center">
+                <div className="text-xs text-white/60">Instagram</div>
+                <img
+                  src={CONTACT.instaQr}
+                  alt="Instagram QR"
+                  className="mx-auto mt-2 h-28 w-28 object-contain"
+                />
+                <a
+                  href={CONTACT.instagramUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="mt-2 inline-block text-xs font-bold text-orange-300 hover:text-orange-200"
+                >
+                  @{CONTACT.instagramHandle} →
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <div className="mt-5 overflow-hidden rounded-2xl border border-white/10">
+            <iframe
+              title="map"
+              className="h-[320px] w-full"
+              loading="lazy"
+              src={mapsEmbed}
+            />
+          </div>
+        </Card>
 
         <div className="mt-6 grid gap-4 md:grid-cols-3">
           <Card className="p-6 md:col-span-1">
@@ -356,15 +464,34 @@ export default function Page() {
             <div className="mt-4 space-y-2 text-sm text-white/80">
               <div>
                 電話：
-                <a href={`tel:${CONTACT.phoneTel}`} className="ml-1 text-orange-300 hover:text-orange-200">
+                <a
+                  href={`tel:${CONTACT.phoneTel}`}
+                  className="ml-1 text-orange-300 hover:text-orange-200"
+                >
                   {CONTACT.phoneDisplay}
                 </a>
               </div>
               <div>FAX：{CONTACT.faxDisplay}</div>
               <div>
                 LINE：
-                <a href={CONTACT.lineUrl} target="_blank" rel="noreferrer" className="ml-1 text-orange-300 hover:text-orange-200">
+                <a
+                  href={CONTACT.lineUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="ml-1 text-orange-300 hover:text-orange-200"
+                >
                   友だち追加
+                </a>
+              </div>
+              <div>
+                Instagram：
+                <a
+                  href={CONTACT.instagramUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="ml-1 text-orange-300 hover:text-orange-200"
+                >
+                  @{CONTACT.instagramHandle}
                 </a>
               </div>
             </div>
