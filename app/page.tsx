@@ -391,6 +391,26 @@ export default function Page() {
       </section>
 
       {/* Footer */}
+      {/* Mobile Fixed Action Bar */}
+      <div className="fixed bottom-0 left-0 right-0 z-50 border-t border-white/10 bg-neutral-950/90 backdrop-blur md:hidden">
+        <div className="mx-auto flex max-w-6xl gap-2 px-4 py-3">
+          <a
+            href="tel:0178380669"
+            className="flex-1 rounded-xl bg-orange-600 py-3 text-center text-sm font-bold text-black"
+          >
+            ☎ 電話する
+          </a>
+          <a
+            href="https://lin.ee/sAX3m2a"
+            target="_blank"
+            rel="noreferrer"
+            className="flex-1 rounded-xl border border-orange-500/30 bg-orange-500/10 py-3 text-center text-sm font-bold text-orange-200"
+          >
+            💬 LINE相談
+          </a>
+        </div>
+      </div>
+
       <footer className="border-t border-white/10 py-8 text-center text-xs text-white/50">
         © {new Date().getFullYear()} M/BASE
       </footer>
