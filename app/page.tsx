@@ -15,15 +15,23 @@ const CONTACT = {
   phoneTel: "0178380669",
   faxDisplay: "0178-38-0822",
   lineUrl: "https://lin.ee/sAX3m2a",
+  instagramHandle: "m_base.aomori",
+  instagramUrl: "https://www.instagram.com/m_base.aomori/",
+  // 画像が無いならコメントアウトしてOK（表示されないだけ）
+  // lineQr: "/qr/line.png",
+  // instaQr: "/qr/instagram.png",
 };
 
 const GOOGLE_FORM =
   "https://docs.google.com/forms/d/e/1FAIpQLSeMHSUYErLG0_5J0zsw9fweJkCvODrXB81qfVzvzqwvszLy_A/viewform?embedded=true";
 
-/** 仮画像を使う在庫 */
+/**
+ * 在庫車両：写真が無い間は placeholder を使う
+ * public/stock/placeholder.jpg を置けばOK
+ */
 const STOCK = [
   {
-    id: "1",
+    id: "stock-1",
     name: "ジムニー JB64（ベース車両）",
     year: "2019",
     mileage: "6.2万km",
@@ -32,7 +40,7 @@ const STOCK = [
     img: "/stock/placeholder.jpg",
   },
   {
-    id: "2",
+    id: "stock-2",
     name: "ジムニーシエラ JB74（ベース車両）",
     year: "2021",
     mileage: "3.8万km",
@@ -42,99 +50,248 @@ const STOCK = [
   },
 ];
 
+const TRUST_POINTS = [
+  {
+    title: "有限会社ミシマ自動車が運営",
+    desc: "青森県八戸市で長年整備業を行ってきた有限会社ミシマ自動車が運営。指定整備工場としての実績と技術を活かし、カスタムから車検・整備・鈑金塗装まで一貫対応します。",
+  },
+  {
+    title: "指定整備工場としての安心感",
+    desc: "国の認可を受けた指定整備工場の基準で対応。安全性・法規を前提に、通る・使えるカスタムを提案します。",
+  },
+  {
+    title: "作って終わりにしない",
+    desc: "カスタム後の点検・整備・修理まで対応。維持管理まで任せられるのが強みです。",
+  },
+];
+
+const SERVICES = [
+  {
+    title: "SUV・4WDカスタム",
+    desc: "リフトアップ、足回り、タイヤ・ホイール、外装・電装まで。安全性・耐久性・法規を重視。",
+  },
+  {
+    title: "車検・法定点検",
+    desc: "指定整備工場の基準で対応。カスタム車も含めて安心して任せられる車検。",
+  },
+  {
+    title: "一般整備・メンテナンス",
+    desc: "日常点検から故障診断まで。4WD特有の足回り・駆動系も対応。",
+  },
+  {
+    title: "鈑金・塗装",
+    desc: "キズ・凹み修理、事故修理、部分塗装、カスタムペイントまで対応。",
+  },
+  {
+    title: "車両販売（新車・中古車）",
+    desc: "ベース車両探しからカスタム前提の車両選定まで提案。",
+  },
+  {
+    title: "リース・各種相談",
+    desc: "法人・個人向けリース相談にも対応。",
+  },
+];
+
+function SectionTitle({ title, sub }: { title: string; sub?: string }) {
+  return (
+    <div>
+      <h2 className="text-2xl font-black">{title}</h2>
+      {sub ? <p className="mt-2 text-sm text-white/75">{sub}</p> : null}
+    </div>
+  );
+}
+
 export default function Page() {
   return (
-    <main className="min-h-screen bg-neutral-950 text-white pb-32">
+    <main className="min-h-screen bg-neutral-950 text-white pb-32 md:pb-0">
       {/* HERO */}
       <section className="mx-auto max-w-6xl px-4 py-12">
-        <span className="rounded-full border border-orange-500/30 bg-orange-500/10 px-3 py-1 text-xs text-orange-200">
+        <div className="inline-block rounded-full border border-orange-500/30 bg-orange-500/10 px-3 py-1 text-xs text-orange-200">
           指定整備工場が運営
-        </span>
+        </div>
 
-        <h1 className="mt-5 text-4xl font-black md:text-5xl">
+        <h1 className="mt-5 text-4xl font-black leading-tight md:text-5xl">
           SUV・4WDを<br />
-          <span className="text-orange-500">安心して任せられる</span><br />
+          <span className="text-orange-500">安心して任せられる</span>
+          <br />
           カスタム＆整備
         </h1>
 
         <p className="mt-4 text-white/75">
-          {INFO.operator}が運営するM/BASE。<br />
-          カスタム・車検・整備・鈑金塗装・車両販売・リースまで
-          ワンストップ対応。
+          {INFO.operator}が運営するM/BASE。
+          <br />
+          カスタムから車検・整備・鈑金塗装・車両販売・リースまで、
+          ワンストップで対応します。
         </p>
 
         <div className="mt-4 rounded-xl border border-white/10 bg-white/5 p-4 text-sm">
-          {INFO.tagline}
+          <div className="font-bold">対応内容</div>
+          <div className="mt-1">{INFO.tagline}</div>
+        </div>
+
+        <div className="mt-6 flex flex-wrap gap-3">
+          <a
+            href="#services"
+            className="rounded-xl border border-white/20 px-4 py-2 text-sm font-semibold text-white hover:border-white/35"
+          >
+            できること
+          </a>
+          <a
+            href="#stock"
+            className="rounded-xl border border-white/20 px-4 py-2 text-sm font-semibold text-white hover:border-white/35"
+          >
+            在庫を見る
+          </a>
+          <a
+            href="#contact"
+            className="rounded-xl bg-orange-600 px-4 py-2 text-sm font-semibold text-black hover:bg-orange-500"
+          >
+            相談・見積もり
+          </a>
         </div>
       </section>
 
-      {/* STOCK */}
+      {/* TRUST */}
       <section className="border-t border-white/10">
         <div className="mx-auto max-w-6xl px-4 py-12">
-          <h2 className="text-2xl font-black">在庫車両</h2>
-
-          <div className="mt-6 grid gap-4 sm:grid-cols-2">
-            {STOCK.map((v) => (
+          <SectionTitle title="信頼できる理由" sub={`運営会社：${INFO.operator}`} />
+          <div className="mt-6 grid gap-4 md:grid-cols-3">
+            {TRUST_POINTS.map((p) => (
               <div
-                key={v.id}
-                className="overflow-hidden rounded-2xl border border-white/10 bg-black/20"
+                key={p.title}
+                className="rounded-2xl border border-white/10 bg-white/5 p-6"
               >
-                <img
-                  src={v.img}
-                  alt={v.name}
-                  className="h-44 w-full object-cover"
-                />
-
-                <div className="p-4">
-                  <div className="font-bold">{v.name}</div>
-
-                  <div className="mt-2 grid grid-cols-3 gap-2 text-xs text-white/70">
-                    <div>年式：{v.year}</div>
-                    <div>走行：{v.mileage}</div>
-                    <div>価格：{v.price}</div>
-                  </div>
-
-                  <p className="mt-2 text-xs text-white/60">{v.note}</p>
-
-                  <div className="mt-4 flex gap-2">
-                    <a
-                      href={CONTACT.lineUrl}
-                      target="_blank"
-                      className="flex-1 rounded-xl border border-orange-500/30 bg-orange-500/10 py-2 text-center text-sm font-bold text-orange-200"
-                    >
-                      LINE相談
-                    </a>
-                    <a
-                      href="#contact"
-                      className="flex-1 rounded-xl bg-orange-600 py-2 text-center text-sm font-bold text-black"
-                    >
-                      問い合わせ
-                    </a>
-                  </div>
-                </div>
+                <div className="font-bold">{p.title}</div>
+                <div className="mt-2 text-sm text-white/75">{p.desc}</div>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* CONTACT */}
-      <section id="contact" className="border-t border-white/10">
+      {/* SERVICES */}
+      <section className="border-t border-white/10" id="services">
         <div className="mx-auto max-w-6xl px-4 py-12">
-          <h2 className="text-2xl font-black">総合相談・見積もり</h2>
+          <SectionTitle title="できること" />
+          <div className="mt-6 grid gap-4 md:grid-cols-2">
+            {SERVICES.map((s) => (
+              <div
+                key={s.title}
+                className="rounded-2xl border border-white/10 bg-white/5 p-6"
+              >
+                <div className="font-bold">{s.title}</div>
+                <div className="mt-2 text-sm text-white/75">{s.desc}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
 
-          <p className="mt-2 text-sm text-white/75">
-            車検・整備・カスタム・車両販売までお気軽に。
-          </p>
+      {/* STOCK */}
+      <section className="border-t border-white/10" id="stock">
+        <div className="mx-auto max-w-6xl px-4 py-12">
+          <SectionTitle
+            title="在庫車両"
+            sub="現在販売中の車両です。気になる車両がありましたら、詳細はお気軽にお問い合わせください。"
+          />
 
-          <div className="mt-4">
-            TEL：
-            <a
-              href={`tel:${CONTACT.phoneTel}`}
-              className="ml-1 text-orange-300"
-            >
-              {CONTACT.phoneDisplay}
-            </a>
+          <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {STOCK.map((v) => (
+              <div
+                key={v.id}
+                className="overflow-hidden rounded-2xl border border-white/10 bg-black/20"
+              >
+                <div className="h-44 w-full bg-black">
+                  {/* onError は使わない（Server Componentでビルドが落ちるため） */}
+                  <img
+                    src={v.img}
+                    alt={v.name}
+                    className="h-full w-full object-cover"
+                  />
+                </div>
+
+                <div className="p-4">
+                  <div className="text-sm font-bold">{v.name}</div>
+
+                  <div className="mt-2 grid grid-cols-3 gap-2 text-[11px] text-white/70">
+                    <div className="rounded-lg border border-white/10 bg-white/5 p-2">
+                      <div className="text-white/60">年式</div>
+                      <div className="mt-0.5 text-white/85">{v.year}</div>
+                    </div>
+                    <div className="rounded-lg border border-white/10 bg-white/5 p-2">
+                      <div className="text-white/60">走行</div>
+                      <div className="mt-0.5 text-white/85">{v.mileage}</div>
+                    </div>
+                    <div className="rounded-lg border border-white/10 bg-white/5 p-2">
+                      <div className="text-white/60">価格</div>
+                      <div className="mt-0.5 text-white/85">{v.price}</div>
+                    </div>
+                  </div>
+
+                  <div className="mt-2 text-xs text-white/65">{v.note}</div>
+
+                  <div className="mt-4 flex gap-2">
+                    <a
+                      href={CONTACT.lineUrl}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="flex-1 rounded-xl border border-orange-500/30 bg-orange-500/10 py-2 text-center text-sm font-bold text-orange-200"
+                    >
+                      LINEで問合せ
+                    </a>
+                    <a
+                      href="#contact"
+                      className="flex-1 rounded-xl bg-orange-600 py-2 text-center text-sm font-bold text-black"
+                    >
+                      フォーム
+                    </a>
+                  </div>
+
+                  <div className="mt-2 text-[11px] text-white/55">
+                    ※ 在庫は随時変動します。先着順となります。
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <div className="mt-6 rounded-2xl border border-white/10 bg-white/5 p-5 text-sm text-white/75">
+            在庫が無い場合でも、ベース車両の相談・取り寄せが可能です。
+            「希望車種」「予算感」「用途（通勤／アウトドア／雪道）」をLINEかフォームで送ってください。
+          </div>
+        </div>
+      </section>
+
+      {/* CONTACT */}
+      <section className="border-t border-white/10" id="contact">
+        <div className="mx-auto max-w-6xl px-4 py-12">
+          <SectionTitle
+            title="総合相談・見積もり"
+            sub="車検・整備・カスタム・鈑金塗装・車販・リースまで、まとめてご相談ください。"
+          />
+
+          <div className="mt-4 space-y-2 text-sm">
+            <div>
+              電話：
+              <a
+                href={`tel:${CONTACT.phoneTel}`}
+                className="ml-1 text-orange-300"
+              >
+                {CONTACT.phoneDisplay}
+              </a>
+            </div>
+            <div>FAX：{CONTACT.faxDisplay}</div>
+            <div>
+              LINE：
+              <a
+                href={CONTACT.lineUrl}
+                target="_blank"
+                rel="noreferrer"
+                className="ml-1 text-orange-300"
+              >
+                友だち追加
+              </a>
+            </div>
           </div>
 
           <div className="mt-6 rounded-2xl overflow-hidden border border-white/10">
@@ -143,10 +300,10 @@ export default function Page() {
         </div>
       </section>
 
-      {/* MOBILE BAR */}
-      <div className="fixed bottom-4 left-0 right-0 z-50 md:hidden">
+      {/* MOBILE FIXED BAR */}
+      <div className="fixed inset-x-0 bottom-6 z-[60] md:hidden">
         <div className="mx-auto max-w-6xl px-4">
-          <div className="flex gap-2 rounded-2xl bg-black/90 p-3">
+          <div className="flex gap-2 rounded-2xl border border-white/10 bg-neutral-950/90 p-3 shadow-lg backdrop-blur">
             <a
               href={`tel:${CONTACT.phoneTel}`}
               className="flex-1 rounded-xl bg-orange-600 py-3 text-center font-bold text-black"
@@ -156,6 +313,7 @@ export default function Page() {
             <a
               href={CONTACT.lineUrl}
               target="_blank"
+              rel="noreferrer"
               className="flex-1 rounded-xl border border-orange-500/30 bg-orange-500/10 py-3 text-center font-bold text-orange-200"
             >
               💬 LINE
@@ -164,10 +322,20 @@ export default function Page() {
         </div>
       </div>
 
-      <footer className="border-t border-white/10 py-6 text-center text-xs text-white/60">
-        <div>{INFO.brand}</div>
-        <div>運営：{INFO.operator}</div>
-        <div>© {new Date().getFullYear()} M/BASE</div>
+      {/* FOOTER */}
+      <footer className="border-t border-white/10 py-8 text-center text-xs text-white/60">
+        <div className="space-y-1">
+          <div className="font-bold">{INFO.brand}</div>
+          <div>{INFO.tagline}</div>
+          <div>運営会社：{INFO.operator}</div>
+          <div>〒 {INFO.address}</div>
+          <div>
+            TEL {CONTACT.phoneDisplay} / FAX {CONTACT.faxDisplay}
+          </div>
+          <div className="text-white/40">
+            © {new Date().getFullYear()} M/BASE
+          </div>
+        </div>
       </footer>
     </main>
   );
