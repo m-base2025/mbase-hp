@@ -28,7 +28,7 @@ const GOOGLE_FORM =
 /**
  * 在庫車両（ここを増やすだけでOK）
  * img は public/stock/ に置いた画像パス
- * price は "ASK" でもOK（カスタム前提なら強い）
+ * price は "ASK" でもOK
  */
 const STOCK = [
   {
@@ -119,12 +119,14 @@ export default function Page() {
 
         <h1 className="mt-5 text-4xl font-black leading-tight md:text-5xl">
           SUV・4WDを<br />
-          <span className="text-orange-500">安心して任せられる</span><br />
+          <span className="text-orange-500">安心して任せられる</span>
+          <br />
           カスタム＆整備
         </h1>
 
         <p className="mt-4 text-white/75">
-          {INFO.operator}が運営するM/BASE。<br />
+          {INFO.operator}が運営するM/BASE。
+          <br />
           カスタムから車検・整備・鈑金塗装・車両販売・リースまで、
           ワンストップで対応します。
         </p>
@@ -144,15 +146,35 @@ export default function Page() {
             <div className="mt-1">{INFO.hours}</div>
           </div>
         </div>
+
+        <div className="mt-6 flex flex-wrap gap-3">
+          <a
+            href="#stock"
+            className="rounded-xl border border-white/20 px-4 py-2 text-sm font-semibold text-white hover:border-white/35"
+          >
+            在庫を見る
+          </a>
+          <a
+            href="#contact"
+            className="rounded-xl bg-orange-600 px-4 py-2 text-sm font-semibold text-black hover:bg-orange-500"
+          >
+            相談・見積もり
+          </a>
+          <a
+            href={CONTACT.lineUrl}
+            target="_blank"
+            rel="noreferrer"
+            className="rounded-xl border border-orange-500/30 bg-orange-500/10 px-4 py-2 text-sm font-semibold text-orange-200 hover:bg-orange-500/15"
+          >
+            LINE相談
+          </a>
+        </div>
       </section>
 
       {/* Trust */}
       <section className="border-t border-white/10">
         <div className="mx-auto max-w-6xl px-4 py-12">
-          <SectionTitle
-            title="信頼できる理由"
-            sub={`運営会社：${INFO.operator}`}
-          />
+          <SectionTitle title="信頼できる理由" sub={`運営会社：${INFO.operator}`} />
 
           <div className="mt-6 grid gap-4 md:grid-cols-3">
             {TRUST_POINTS.map((p) => (
@@ -202,14 +224,11 @@ export default function Page() {
                 className="overflow-hidden rounded-2xl border border-white/10 bg-black/20"
               >
                 <div className="h-44 w-full bg-black">
-                  {/* 画像が無い場合でも崩れない */}
+                  {/* onError は使わない（Server Componentでビルドが落ちるため） */}
                   <img
                     src={v.img}
                     alt={v.name}
                     className="h-full w-full object-cover"
-                    onError={(e) => {
-                      (e.currentTarget as HTMLImageElement).style.display = "none";
-                    }}
                   />
                 </div>
 
@@ -268,29 +287,65 @@ export default function Page() {
       {/* Contact */}
       <section className="border-t border-white/10" id="contact">
         <div className="mx-auto max-w-6xl px-4 py-12">
-          <SectionTitle title="総合相談・見積もり" sub="車検・整備・カスタム・鈑金塗装・車販・リースまで、まとめてご相談ください。" />
+          <SectionTitle
+            title="総合相談・見積もり"
+            sub="車検・整備・カスタム・鈑金塗装・車販・リースまで、まとめてご相談ください。"
+          />
 
-          <div className="mt-4 space-y-2 text-sm">
-            <div>
-              電話：
-              <a
-                href={`tel:${CONTACT.phoneTel}`}
-                className="ml-1 text-orange-300"
-              >
-                {CONTACT.phoneDisplay}
-              </a>
+          <div className="mt-4 grid gap-4 md:grid-cols-2">
+            <div className="rounded-2xl border border-white/10 bg-white/5 p-6">
+              <div className="font-bold">電話・FAX</div>
+              <div className="mt-3 text-sm text-white/80 space-y-2">
+                <div>
+                  電話：
+                  <a
+                    href={`tel:${CONTACT.phoneTel}`}
+                    className="ml-1 text-orange-300 hover:text-orange-200"
+                  >
+                    {CONTACT.phoneDisplay}
+                  </a>
+                </div>
+                <div>FAX：{CONTACT.faxDisplay}</div>
+              </div>
             </div>
-            <div>FAX：{CONTACT.faxDisplay}</div>
-            <div>
-              LINE：
-              <a
-                href={CONTACT.lineUrl}
-                target="_blank"
-                rel="noreferrer"
-                className="ml-1 text-orange-300"
-              >
-                友だち追加
-              </a>
+
+            <div className="rounded-2xl border border-white/10 bg-white/5 p-6">
+              <div className="font-bold">LINE / Instagram</div>
+              <div className="mt-4 grid grid-cols-2 gap-4">
+                <div className="rounded-xl border border-white/10 bg-black/20 p-3 text-center">
+                  <div className="text-xs text-white/70">LINE</div>
+                  <img
+                    src={CONTACT.lineQr}
+                    alt="LINE QR"
+                    className="mx-auto mt-2 h-28 w-28 object-contain"
+                  />
+                  <a
+                    href={CONTACT.lineUrl}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="mt-2 inline-block text-xs text-orange-300 hover:text-orange-200"
+                  >
+                    友だち追加 →
+                  </a>
+                </div>
+
+                <div className="rounded-xl border border-white/10 bg-black/20 p-3 text-center">
+                  <div className="text-xs text-white/70">Instagram</div>
+                  <img
+                    src={CONTACT.instaQr}
+                    alt="Instagram QR"
+                    className="mx-auto mt-2 h-28 w-28 object-contain"
+                  />
+                  <a
+                    href={CONTACT.instagramUrl}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="mt-2 inline-block text-xs text-orange-300 hover:text-orange-200"
+                  >
+                    @{CONTACT.instagramHandle} →
+                  </a>
+                </div>
+              </div>
             </div>
           </div>
 
