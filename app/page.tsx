@@ -22,6 +22,35 @@ const CONTACT = {
   instaQr: "/qr/instagram.png",
 };
 
+const GOOGLE_FORM =
+  "https://docs.google.com/forms/d/e/1FAIpQLSeMHSUYErLG0_5J0zsw9fweJkCvODrXB81qfVzvzqwvszLy_A/viewform?embedded=true";
+
+/**
+ * 在庫車両（ここを増やすだけでOK）
+ * img は public/stock/ に置いた画像パス
+ * price は "ASK" でもOK（カスタム前提なら強い）
+ */
+const STOCK = [
+  {
+    id: "stock-1",
+    name: "（例）ジムニー JB64",
+    year: "2019",
+    mileage: "6.2万km",
+    price: "ASK",
+    note: "ベース車両相談OK／カスタムプラン提案可",
+    img: "/stock/stock-1.jpg",
+  },
+  {
+    id: "stock-2",
+    name: "（例）ジムニーシエラ JB74",
+    year: "2021",
+    mileage: "3.8万km",
+    price: "ASK",
+    note: "足回り・タイヤ込み提案できます",
+    img: "/stock/stock-2.jpg",
+  },
+];
+
 const TRUST_POINTS = [
   {
     title: "有限会社ミシマ自動車が運営",
@@ -64,8 +93,20 @@ const SERVICES = [
   },
 ];
 
-const GOOGLE_FORM =
-  "https://docs.google.com/forms/d/e/1FAIpQLSeMHSUYErLG0_5J0zsw9fweJkCvODrXB81qfVzvzqwvszLy_A/viewform?embedded=true";
+function SectionTitle({
+  title,
+  sub,
+}: {
+  title: string;
+  sub?: string;
+}) {
+  return (
+    <div>
+      <h2 className="text-2xl font-black">{title}</h2>
+      {sub ? <p className="mt-2 text-sm text-white/75">{sub}</p> : null}
+    </div>
+  );
+}
 
 export default function Page() {
   return (
@@ -92,15 +133,26 @@ export default function Page() {
           <div className="font-bold">対応内容</div>
           <div className="mt-1">{INFO.tagline}</div>
         </div>
+
+        <div className="mt-6 grid grid-cols-2 gap-3 text-xs text-white/70">
+          <div className="rounded-xl border border-white/10 bg-white/5 p-3">
+            <div className="text-white/90">所在地</div>
+            <div className="mt-1">{INFO.address}</div>
+          </div>
+          <div className="rounded-xl border border-white/10 bg-white/5 p-3">
+            <div className="text-white/90">営業時間</div>
+            <div className="mt-1">{INFO.hours}</div>
+          </div>
+        </div>
       </section>
 
       {/* Trust */}
       <section className="border-t border-white/10">
         <div className="mx-auto max-w-6xl px-4 py-12">
-          <h2 className="text-2xl font-black">信頼できる理由</h2>
-          <p className="mt-2 text-sm text-white/75">
-            運営会社：<span className="font-semibold">{INFO.operator}</span>
-          </p>
+          <SectionTitle
+            title="信頼できる理由"
+            sub={`運営会社：${INFO.operator}`}
+          />
 
           <div className="mt-6 grid gap-4 md:grid-cols-3">
             {TRUST_POINTS.map((p) => (
@@ -119,7 +171,8 @@ export default function Page() {
       {/* Services */}
       <section className="border-t border-white/10">
         <div className="mx-auto max-w-6xl px-4 py-12">
-          <h2 className="text-2xl font-black">できること</h2>
+          <SectionTitle title="できること" />
+
           <div className="mt-6 grid gap-4 md:grid-cols-2">
             {SERVICES.map((s) => (
               <div
@@ -134,10 +187,88 @@ export default function Page() {
         </div>
       </section>
 
-      {/* Contact */}
-      <section className="border-t border-white/10">
+      {/* Stock */}
+      <section className="border-t border-white/10" id="stock">
         <div className="mx-auto max-w-6xl px-4 py-12">
-          <h2 className="text-2xl font-black">総合相談・見積もり</h2>
+          <SectionTitle
+            title="在庫車両"
+            sub="現在販売中の車両です。気になる車両がありましたら、詳細はお気軽にお問い合わせください。"
+          />
+
+          <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {STOCK.map((v) => (
+              <div
+                key={v.id}
+                className="overflow-hidden rounded-2xl border border-white/10 bg-black/20"
+              >
+                <div className="h-44 w-full bg-black">
+                  {/* 画像が無い場合でも崩れない */}
+                  <img
+                    src={v.img}
+                    alt={v.name}
+                    className="h-full w-full object-cover"
+                    onError={(e) => {
+                      (e.currentTarget as HTMLImageElement).style.display = "none";
+                    }}
+                  />
+                </div>
+
+                <div className="p-4">
+                  <div className="text-sm font-bold">{v.name}</div>
+
+                  <div className="mt-2 grid grid-cols-3 gap-2 text-[11px] text-white/70">
+                    <div className="rounded-lg border border-white/10 bg-white/5 p-2">
+                      <div className="text-white/60">年式</div>
+                      <div className="mt-0.5 text-white/85">{v.year}</div>
+                    </div>
+                    <div className="rounded-lg border border-white/10 bg-white/5 p-2">
+                      <div className="text-white/60">走行</div>
+                      <div className="mt-0.5 text-white/85">{v.mileage}</div>
+                    </div>
+                    <div className="rounded-lg border border-white/10 bg-white/5 p-2">
+                      <div className="text-white/60">価格</div>
+                      <div className="mt-0.5 text-white/85">{v.price}</div>
+                    </div>
+                  </div>
+
+                  <div className="mt-2 text-xs text-white/65">{v.note}</div>
+
+                  <div className="mt-4 flex gap-2">
+                    <a
+                      href={CONTACT.lineUrl}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="flex-1 rounded-xl border border-orange-500/30 bg-orange-500/10 py-2 text-center text-sm font-bold text-orange-200"
+                    >
+                      LINEで問合せ
+                    </a>
+                    <a
+                      href="#contact"
+                      className="flex-1 rounded-xl bg-orange-600 py-2 text-center text-sm font-bold text-black"
+                    >
+                      フォーム
+                    </a>
+                  </div>
+
+                  <div className="mt-2 text-[11px] text-white/55">
+                    ※ 在庫は随時変動します。先着順となります。
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <div className="mt-6 rounded-2xl border border-white/10 bg-white/5 p-5 text-sm text-white/75">
+            在庫が無い場合でも、ベース車両の相談・取り寄せが可能です。
+            「希望車種」「予算感」「用途（通勤／アウトドア／雪道）」をLINEかフォームで送ってください。
+          </div>
+        </div>
+      </section>
+
+      {/* Contact */}
+      <section className="border-t border-white/10" id="contact">
+        <div className="mx-auto max-w-6xl px-4 py-12">
+          <SectionTitle title="総合相談・見積もり" sub="車検・整備・カスタム・鈑金塗装・車販・リースまで、まとめてご相談ください。" />
 
           <div className="mt-4 space-y-2 text-sm">
             <div>
@@ -170,9 +301,9 @@ export default function Page() {
       </section>
 
       {/* Mobile Fixed Bar */}
-      <div className="fixed inset-x-0 bottom-6 z-50 md:hidden">
+      <div className="fixed inset-x-0 bottom-6 z-[60] md:hidden">
         <div className="mx-auto max-w-6xl px-4">
-          <div className="flex gap-2 rounded-2xl border border-white/10 bg-neutral-950/90 p-3">
+          <div className="flex gap-2 rounded-2xl border border-white/10 bg-neutral-950/90 p-3 shadow-lg backdrop-blur">
             <a
               href={`tel:${CONTACT.phoneTel}`}
               className="flex-1 rounded-xl bg-orange-600 py-3 text-center font-bold text-black"
@@ -197,7 +328,7 @@ export default function Page() {
           <div className="font-bold">{INFO.brand}</div>
           <div>{INFO.tagline}</div>
           <div>運営会社：{INFO.operator}</div>
-          <div>{INFO.address}</div>
+          <div>〒 {INFO.address}</div>
           <div>
             TEL {CONTACT.phoneDisplay} / FAX {CONTACT.faxDisplay}
           </div>
