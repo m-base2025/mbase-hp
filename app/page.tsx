@@ -28,7 +28,7 @@ const CONTACT = {
   投稿URLを追加するだけ
 ======================= */
 const INSTAGRAM_POSTS = [
-  "https://www.instagram.com/p/CXXXXXX1/",
+  "https://www.instagram.com/p/DTZdAxoEtrV/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==",
   "https://www.instagram.com/p/CXXXXXX2/",
   "https://www.instagram.com/p/CXXXXXX3/",
 ];
